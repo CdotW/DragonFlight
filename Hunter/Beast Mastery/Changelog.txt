@@ -14,4 +14,3 @@ v1.1:
 	- Dire Beast (should not cast if unit will die in 8 seconds).
 - Added function for Unit(unit):TimeToDie() to tidy up code.
 - Added function for Unit(unit):IsBoss() to tidy up code.
-- Added checks for wailing arrow (should not try to cast if moving).
