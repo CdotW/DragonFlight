@@ -432,7 +432,7 @@
   end
 
   -- Passes unitID and returns predicted duration in seconds for the unit to die.
-  local function unitTimeToDie(unitID)
+  local function unitTimeToDie(unit)
       local unitTimeToDie = Unit(unitID):TimeToDie()
       return unitTimeToDie
   end
@@ -497,7 +497,7 @@
           end
 
 
-          if BurstIsON(unitID) and useRacial and (unitTimeToDie(unitID) < 16 and unitIsBoss(unitID) or unitTimeToDie(unitID) > 16) and A.BarbedShot:IsInRange(unitID) then
+          if BurstIsON(unitID) and useRacial and (unitTimeToDie(unit) < 16 and unitIsBoss(unitID) or unitTimeToDie(unit) > 16) and A.BarbedShot:IsInRange(unitID) then
               -- actions.cds+=/berserking,if=buff.call_of_the_wild.up|!talent.call_of_the_wild&buff.bestial_wrath.up|fight_remains<13
               if A.Berserking:IsReady(player) then
                   if Unit(player):HasBuffs(A.CalloftheWild.ID) > 0 or (not A.CalloftheWild:IsTalentLearned() and Unit(player):HasBuffs(A.BestialWrath.ID) > 0) then
@@ -537,23 +537,23 @@
                   return A.KillCommand:Show(icon)
               end
               -- actions.st+=/call_of_the_wild
-              if A.CalloftheWild:IsReady(player) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.CalloftheWild:IsReady(player) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.CalloftheWild:Show(icon)
               end
               -- actions.st+=/death_chakram
-              if A.DeathChakram:IsReady(unitID) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.DeathChakram:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.DeathChakram:Show(icon)
               end
               -- actions.st+=/bloodshed
-              if A.Bloodshed:IsReady(unitID) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.Bloodshed:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.Bloodshed:Show(icon)
               end
               -- actions.st+=/stampede
-              if A.Stampede:IsReady(player) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.Stampede:IsReady(player) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.Stampede:Show(icon)
               end
               -- actions.st+=/a_murder_of_crows
-              if A.AMurderOfCrows:IsReady(unitID) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.AMurderOfCrows:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.AMurderOfCrows:Show(icon)
               end
               -- actions.st+=/steel_trap
@@ -561,7 +561,7 @@
                   return A.SteelTrap:Show(icon)
               end
               -- actions.st+=/explosive_shot
-              if A.ExplosiveShot:IsReady(unitID) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.ExplosiveShot:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.ExplosiveShot:Show(icon)
               end
               -- actions.st+=/bestial_wrath
@@ -576,16 +576,16 @@
               end
               -- actions.st+=/barbed_shot,target_if=min:dot.barbed_shot.remains,if=talent.wild_instincts&buff.call_of_the_wild.up|talent.wild_call&charges_fractional>1.4|full_recharge_time<gcd&cooldown.bestial_wrath.remains|talent.scent_of_blood&(cooldown.bestial_wrath.remains<12+gcd|full_recharge_time+gcd<8&cooldown.bestial_wrath.remains<24+(8-gcd)+full_recharge_time)|fight_remains<9
               if A.BarbedShot:IsReady(unitID) then
-                  if A.WildInstincts:IsTalentLearned() and Unit(player):HasBuffs(A.CalloftheWild.ID) > 0 or A.WildCall:IsTalentLearned() and A.BarbedShot:GetSpellChargesFrac() > 1.4 or A.BarbedShot:GetSpellChargesFullRechargeTime() < A.GetGCD() and A.BestialWrath:GetCooldown() > 0 or A.ScentofBlood:IsTalentLearned() and (A.BestialWrath:GetCooldown() < 12 + A.GetGCD() or A.BarbedShot:GetSpellChargesFullRechargeTime() + A.GetGCD() < 8 and A.BestialWrath:GetCooldown() < 24 + (8 - A.GetGCD()) + A.BarbedShot:GetSpellChargesFullRechargeTime()) or (unitTimeToDie(unitID) < 9 and unitIsBoss(unitID)) then
+                  if A.WildInstincts:IsTalentLearned() and Unit(player):HasBuffs(A.CalloftheWild.ID) > 0 or A.WildCall:IsTalentLearned() and A.BarbedShot:GetSpellChargesFrac() > 1.4 or A.BarbedShot:GetSpellChargesFullRechargeTime() < A.GetGCD() and A.BestialWrath:GetCooldown() > 0 or A.ScentofBlood:IsTalentLearned() and (A.BestialWrath:GetCooldown() < 12 + A.GetGCD() or A.BarbedShot:GetSpellChargesFullRechargeTime() + A.GetGCD() < 8 and A.BestialWrath:GetCooldown() < 24 + (8 - A.GetGCD()) + A.BarbedShot:GetSpellChargesFullRechargeTime()) or (unitTimeToDie(unit) < 9 and unitIsBoss(unitID)) then
                       return A.BarbedShot:Show(icon)
                   end
               end
               -- actions.st+=/dire_beast
-              if A.DireBeast:IsReady(unitID) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID)) then
+              if A.DireBeast:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
                   return A.DireBeast:Show(icon)
               end
               -- actions.st+=/serpent_sting,target_if=min:remains,if=refreshable&target.time_to_die>duration
-              if A.SerpentSting:IsReady(unitID) and Unit(unitID):HasDeBuffs(A.SerpentSting.ID) <= A.SerpentSting:GetSpellPandemicThreshold() and unitTimeToDie(unitID) > 18 then
+              if A.SerpentSting:IsReady(unitID) and Unit(unitID):HasDeBuffs(A.SerpentSting.ID) <= A.SerpentSting:GetSpellPandemicThreshold() and unitTimeToDie(unit) > 18 then
                   return A.SerpentSting:Show(icon)
               end
               -- actions.st+=/kill_shot
@@ -593,7 +593,7 @@
                   return A.KillShot:Show(icon)
               end
               -- actions.st+=/aspect_of_the_wild
-              if A.AspectoftheWild:IsReady(unitID) and unitTimeToDie(unitID) > 8 or unitIsBoss(unitID) then
+              if A.AspectoftheWild:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.AspectoftheWild:Show(icon)
               end
               -- actions.st+=/cobra_shot
@@ -602,7 +602,7 @@
               end
               --[[ actions.st+=/wailing_arrow,if=pet.main.buff.frenzy.remains>execute_time|target.time_to_die<5 (removed usage)
               if A.WailingArrow:IsReady(unitID) and not isMoving then
-                  if Unit(pet):HasBuffs(A.Frenzy.ID) > A.WailingArrow:GetSpellCastTime() or unitTimeToDie(unitID) < 5 then
+                  if Unit(pet):HasBuffs(A.Frenzy.ID) > A.WailingArrow:GetSpellCastTime() or unitTimeToDie(unit) < 5 then
                       return A.WailingArrow:Show(icon)
                   end
               end
@@ -645,23 +645,23 @@
                   return A.KillCommand:Show(icon)
               end
               -- actions.cleave+=/call_of_the_wild
-              if A.CalloftheWild:IsReady(player) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID)) then
+              if A.CalloftheWild:IsReady(player) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
                   return A.CalloftheWild:Show(icon)
               end
               -- actions.cleave+=/explosive_shot
-              if A.ExplosiveShot:IsReady(unitID) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID))then
+              if A.ExplosiveShot:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID))then
                   return A.ExplosiveShot:Show(icon)
               end
               -- actions.cleave+=/stampede,if=buff.bestial_wrath.up|target.time_to_die<15
-              if A.Stampede:IsReady(player) and unitTimeToDie(unitID) > 8 then
+              if A.Stampede:IsReady(player) and unitTimeToDie(unit) > 8 then
                   return A.Stampede:Show(icon)
               end
               -- actions.cleave+=/bloodshed
-              if A.Bloodshed:IsReady(unitID) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID)) then
+              if A.Bloodshed:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
                   return A.Bloodshed:Show(icon)
               end
               -- actions.cleave+=/death_chakram
-              if A.DeathChakram:IsReady(unitID) and unitTimeToDie(unitID) > 8 then
+              if A.DeathChakram:IsReady(unitID) and unitTimeToDie(unit) > 8 then
                   return A.DeathChakram:Show(icon)
               end
               -- actions.cleave+=/steel_trap
@@ -669,7 +669,7 @@
                   return A.SteelTrap:Show(icon)
               end
               -- actions.cleave+=/a_murder_of_crows
-              if A.AMurderOfCrows:IsReady(unitID) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID))  then
+              if A.AMurderOfCrows:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID))  then
                   return A.AMurderOfCrows:Show(icon)
               end
               -- actions.cleave+=/barbed_shot,target_if=max:debuff.latent_poison.stack,if=debuff.latent_poison.stack>9&(talent.wild_instincts&buff.call_of_the_wild.up|fight_remains<9|talent.wild_call&charges_fractional>1.2)
@@ -684,15 +684,15 @@
                   return A.KillCommand:Show(icon)
               end
               -- actions.cleave+=/dire_beast
-              if A.DireBeast:IsReady(unitID) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID)) then
+              if A.DireBeast:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
                   return A.DireBeast:Show(icon)
               end
               -- actions.cleave+=/serpent_sting,target_if=min:remains,if=refreshable&target.time_to_die>duration
-              if A.SerpentSting:IsReady(unitID) and Unit(unitID):HasDeBuffs(A.SerpentSting.ID) <= A.SerpentSting:GetSpellPandemicThreshold() and unitTimeToDie(unitID) > 18 then
+              if A.SerpentSting:IsReady(unitID) and Unit(unitID):HasDeBuffs(A.SerpentSting.ID) <= A.SerpentSting:GetSpellPandemicThreshold() and unitTimeToDie(unit) > 18 then
                   return A.SerpentSting:Show(icon)
               end
               -- actions.cleave+=/barrage,if=pet.main.buff.frenzy.remains>execute_time
-              if A.Barrage:IsReady(player) and Unit(pet):HasBuffs(A.Frenzy.ID) > A.Barrage:GetSpellCastTime() and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID)) then
+              if A.Barrage:IsReady(player) and Unit(pet):HasBuffs(A.Frenzy.ID) > A.Barrage:GetSpellCastTime() and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
                   return A.Barrage:Show(icon)
               end
               --actions.cleave+=/multishot,if=pet.main.buff.beast_cleave.remains<gcd*2
@@ -700,7 +700,7 @@
                   return A.MultiShot:Show(icon)
               end
               -- actions.cleave+=/aspect_of_the_wild
-              if A.AspectoftheWild:IsReady(unitID) and (unitTimeToDie(unitID) > 8 or unitIsBoss(unitID)) then
+              if A.AspectoftheWild:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
                   return A.AspectoftheWild:Show(icon)
               end
               -- actions.cleave+=/cobra_shot,if=focus.time_to_max<gcd*2|buff.aspect_of_the_wild.up&focus.time_to_max<gcd*4
@@ -711,7 +711,7 @@
               end
               --[[ actions.cleave+=/wailing_arrow,if=pet.main.buff.frenzy.remains>execute_time|fight_remains<5 (removed usage)
               if A.WailingArrow:IsReady(unitID) and not isMoving then
-                  if Unit(pet):HasBuffs(A.Frenzy.ID) > A.WailingArrow:GetSpellCastTime() or unitTimeToDie(unitID) < 5 then
+                  if Unit(pet):HasBuffs(A.Frenzy.ID) > A.WailingArrow:GetSpellCastTime() or unitTimeToDie(unit) < 5 then
                       return A.WailingArrow:Show(icon)
                   end
               end
