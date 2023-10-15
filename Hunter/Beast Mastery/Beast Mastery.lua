@@ -537,23 +537,23 @@
                   return A.KillCommand:Show(icon)
               end
               -- actions.st+=/call_of_the_wild
-              if A.CalloftheWild:IsReady(player) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
+              if A.CalloftheWild:IsReady(player) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.CalloftheWild:Show(icon)
               end
               -- actions.st+=/death_chakram
-              if A.DeathChakram:IsReady(unitID) and unitTimeToDie(unit) > 8 then
+              if A.DeathChakram:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.DeathChakram:Show(icon)
               end
               -- actions.st+=/bloodshed
-              if A.Bloodshed:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
+              if A.Bloodshed:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.Bloodshed:Show(icon)
               end
               -- actions.st+=/stampede
-              if A.Stampede:IsReady(player) and unitTimeToDie(unit) > 8 then
+              if A.Stampede:IsReady(player) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.Stampede:Show(icon)
               end
               -- actions.st+=/a_murder_of_crows
-              if A.AMurderOfCrows:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
+              if A.AMurderOfCrows:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.AMurderOfCrows:Show(icon)
               end
               -- actions.st+=/steel_trap
@@ -561,12 +561,12 @@
                   return A.SteelTrap:Show(icon)
               end
               -- actions.st+=/explosive_shot
-              if A.ExplosiveShot:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
+              if A.ExplosiveShot:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.ExplosiveShot:Show(icon)
               end
               -- actions.st+=/bestial_wrath
               if A.BestialWrath:IsReady(player) then
-                  if BurstIsON(unitID) and (unitTimeToDie(unit) < 16 and unitIsBoss(unitID)) or (unitTimeToDie(unit) > 16 and A.BarbedShot:IsInRange(unitID)) then
+                  if BurstIsON(unitID) or unitIsBoss(unitID) and A.BarbedShot:IsInRange(unitID) then
                       return A.BestialWrath:Show(icon)
                   end
               end
@@ -593,7 +593,7 @@
                   return A.KillShot:Show(icon)
               end
               -- actions.st+=/aspect_of_the_wild
-              if A.AspectoftheWild:IsReady(unitID) and (unitTimeToDie(unit) > 8 or unitIsBoss(unitID)) then
+              if A.AspectoftheWild:IsReady(unitID) and unitTimeToDie(unit) > 8 or unitIsBoss(unitID) then
                   return A.AspectoftheWild:Show(icon)
               end
               -- actions.st+=/cobra_shot
@@ -604,7 +604,7 @@
               if A.WailingArrow:IsReady(unitID) and not isMoving then
                   if Unit(pet):HasBuffs(A.Frenzy.ID) > A.WailingArrow:GetSpellCastTime() or unitTimeToDie(unit) < 5 then
                       return A.WailingArrow:Show(icon)
-                  end  
+                  end
               end
               --]]
               -- actions.st+=/bag_of_tricks,if=buff.bestial_wrath.down|target.time_to_die<5
@@ -636,7 +636,7 @@
               end
               -- actions.cleave+=/bestial_wrath - Check it's ready, check conditions if ok cast.
               if A.BestialWrath:IsReady(player) then
-                  if BurstIsON(unitID) and (unitTimeToDie(unit) < 16 and unitIsBoss(unitID)) or (unitTimeToDie(unit) > 16 and A.BarbedShot:IsInRange(unitID)) then
+                  if BurstIsON(unitID) or unitIsBoss(unitID) and A.BarbedShot:IsInRange(unitID) then
                       return A.BestialWrath:Show(icon)
                   end
               end
@@ -714,7 +714,7 @@
                   if Unit(pet):HasBuffs(A.Frenzy.ID) > A.WailingArrow:GetSpellCastTime() or unitTimeToDie(unit) < 5 then
                       return A.WailingArrow:Show(icon)
                   end
-              end 
+              end
               --]]
               -- actions.cleave+=/bag_of_tricks,if=buff.bestial_wrath.down|target.time_to_die<5
               if A.BagofTricks:IsReady(player) and useRacial and Unit(player):HasBuffs(A.BestialWrath.ID) == 0 then
