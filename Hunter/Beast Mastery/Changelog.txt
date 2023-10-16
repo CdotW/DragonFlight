@@ -3,15 +3,15 @@ Below you'll find a list of changes made to the BM profile, any feedback, sugges
 v1.1:
 - Will no longer use 'Wailing Arrow'.
 - Will no longer cast Cobra Shot on single target rotation if focus is below 55.
-- Added TimeToDie checks for the following spells (ignores check if it's a boss):
-	- Death Chakram (should not cast if unit will die in 8 seconds).
-	- Stampede (should not cast if unit or boss will die in 8 seconds).
-	- Explosive Shot (should not cast if unit will die in 8 seconds).
-	- Barrage (should not cast if unit will die in 8 seconds).
-	- A murder of crows (should not cast if unit will die in 8 seconds).
-	- Bloodshed (should not cast if unit will die in 8 seconds).
-	- Aspect of the Wild (should not cast if unit will die in 8 seconds).
-	- Call of the Wild (should not cast if unit will die in 8 seconds).
-	- Dire Beast (should not cast if unit will die in 8 seconds).
+- Added TimeToDie checks for the following spells (ignores check if it's a boss but should least to less wasted casts):
+	- Death Chakram
+	- Stampede 
+	- Explosive Shot
+	- Barrage
+	- A murder of crows
+	- Bloodshed 
+	- Aspect of the Wild
+	- Call of the Wild
+	- Dire Beast
 - Added function for Unit(unit):TimeToDie() to tidy up code.
 - Added function for Unit(unit):IsBoss() to tidy up code.
