@@ -13,5 +13,4 @@ v1.1:
 	- Aspect of the Wild
 	- Call of the Wild
 	- Dire Beast
-- Added function for Unit(unit):TimeToDie() to tidy up code.
-- Added function for Unit(unit):IsBoss() to tidy up code.
+- Added function for Unit(unit):TimeToDie()
