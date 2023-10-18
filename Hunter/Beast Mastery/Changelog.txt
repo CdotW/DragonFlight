@@ -2,7 +2,6 @@ Below you'll find a list of changes made to the BM profile, any feedback, sugges
 
 v1.1:
 - Will no longer use 'Wailing Arrow'.
-- Will no longer cast Cobra Shot on single target rotation if focus is below 55.
 - Added TimeToDie checks for the following spells (ignores check if it's a boss but should least to less wasted casts):
 	- Death Chakram
 	- Stampede 
