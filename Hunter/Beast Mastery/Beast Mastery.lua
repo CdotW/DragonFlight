@@ -1,7 +1,7 @@
 --######################################
 --##### TRIP'S BEASTMASTERY HUNTER #####
 --######################################
-
+-- Edited by TheAllSeeing
 --[[
 Borrowed icons:
 SurvivaloftheFittest -> EveryManforHimself
@@ -163,6 +163,7 @@ Pet:AddActionsSpells(253, {
 	17253, -- Bite
 	16827, -- Claw
 	49966, -- Smack
+  288962, -- Blood Bolt
 }, true)
 
 ------------------------------------------
@@ -413,7 +414,7 @@ end
 
 local function ActiveEnemies()
 
-    local spells = {17253, 16827, 49966}
+    local spells = {17253, 16827, 49966, 288962}
     local activeEnemies
 
     if not Pet:IsActive() then
@@ -584,7 +585,7 @@ A[3] = function(icon, isMulti)
                 return A.AspectoftheWild:Show(icon)
             end
             -- actions.st+=/cobra_shot
-            if A.CobraShot:IsReady(unitID) then
+            if A.CobraShot:IsReady(unitID) and Player:Focus() > 65 then
                 return A.CobraShot:Show(icon)
             end
             --[[ actions.st+=/wailing_arrow,if=pet.main.buff.frenzy.remains>execute_time|target.time_to_die<5
