@@ -10,6 +10,5 @@ v1.1:
 	- Barrage
 	- A murder of crows
 	- Bloodshed 
-	- Aspect of the Wild
 	- Call of the Wild
 	- Dire Beast
