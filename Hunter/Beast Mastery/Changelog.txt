@@ -1,7 +1,8 @@
 Below you'll find a list of changes made to the BM profile, any feedback, suggestions etc that you'd like to see or any problems contact me via Discord.
 
-v1.1:
+18/10/23
 - Will no longer use 'Wailing Arrow'.
+- Added Blood Bolt to check the number of active enemies.
 - Added TimeToDie checks for the following spells (ignores check if it's a boss but should least to less wasted casts):
 	- Death Chakram
 	- Stampede 
