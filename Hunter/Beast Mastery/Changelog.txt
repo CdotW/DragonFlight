@@ -13,4 +13,3 @@ v1.1:
 	- Aspect of the Wild
 	- Call of the Wild
 	- Dire Beast
-- Added function for Unit(unit):TimeToDie()
