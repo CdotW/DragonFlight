@@ -584,7 +584,7 @@ A[3] = function(icon, isMulti)
                 return A.AspectoftheWild:Show(icon)
             end
             -- actions.st+=/cobra_shot
-            if A.CobraShot:IsReady(unitID) and Player:Focus() > 54 then
+            if A.CobraShot:IsReady(unitID) then
                 return A.CobraShot:Show(icon)
             end
             --[[ actions.st+=/wailing_arrow,if=pet.main.buff.frenzy.remains>execute_time|target.time_to_die<5
