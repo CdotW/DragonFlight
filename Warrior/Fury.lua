@@ -1,5 +1,3 @@
---  Zakll's Fury Warrior - Updated by TheAllSeeing
-
 local _G, setmetatable, pairs, type, math    = _G, setmetatable, pairs, type, math
 local huge                                     = math.huge
 local math_random                            = math.random
@@ -119,6 +117,8 @@ Action[ACTION_CONST_WARRIOR_FURY] = {
     Annihilator                                = Create({ Type = "Spell", ID = 383916, isTalent = true                                                         }),    -- Talent
     Bloodbath                                    = Create({ Type = "Spell", ID = 335096                                                                             }),
     WrathAndFury                                = Create({ Type = "Spell", ID = 392936, isTalent = true                                                         }),    -- Talent
+    TitanicRage                                = Create({ Type = "Spell", ID = 394329, isTalent = true                                                         }),    -- Talent
+    OverWhelmingRage                                = Create({ Type = "Spell", ID = 382767, isTalent = true                                                         }),    -- Talent
     -- Convenant
     SpearofBastion                            = Create({ Type = "Spell", ID = 307865                                                                             }),
     ConquerorsBanner                        = Create({ Type = "Spell", ID = 324143                                                                             }),
@@ -737,8 +737,129 @@ A[3] = function(icon)
 
         end
 
+        -- [[ Multi Targets ]]
+        local function MT()
+
+          -- actions.multi_target+=/odyns_fury,if=active_enemies>1&talent.titanic_rage&(!buff.meat_cleaver.up|buff.avatar.up|buff.recklessness.up)
+          if A.OdynsFury:IsReady(unitID) and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 and A.TitanicRage:IsTalentLearned() and (Unit(player):HasBuffs(A.MeatCleaverBuff.ID) == 0 or Unit(player):HasBuffs(A.Avatar.ID) > 0 or Unit(player):HasBuffs(A.Recklessness.ID) > 0) then
+            return A.OdynsFury:Show(icon)
+          end
+
+          -- actions.multi_target+=/whirlwind,if=spell_targets.whirlwind>1&talent.improved_whirlwind&!buff.meat_cleaver.up|raid_event.adds.in<2&talent.improved_whirlwind&!buff.meat_cleaver.up
+          if A.Whirlwind:IsReady(unitID) and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 and A.ImprovedWhirlwind:IsTalentLearned() and Unit(player):HasBuffs(A.MeatCleaverBuff.ID) == 0 then
+            return A.Whirlwind:Show(icon)
+          end
+
+          -- actions.multi_target+=/execute,if=buff.ashen_juggernaut.up&buff.ashen_juggernaut.remains<gcd
+          if A.Execute:IsReady(unitID) and Unit(player):HasBuffs(A.AshenJuggernaut.ID) > 0 and Unit(player):HasBuffs(A.AshenJuggernaut.ID) < A.GetGCD() then
+            return A.Execute:Show(icon)
+          end
+
+          -- actions.multi_target+=/thunderous_roar,if=buff.enrage.up&(spell_targets.whirlwind>1|raid_event.adds.in>15)
+          if A.ThunderousRoar:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 then
+            return A.ThunderousRoar:Show(icon)
+          end
+
+          -- actions.multi_target+=/odyns_fury,if=active_enemies>1&buff.enrage.up&raid_event.adds.in>15
+          if A.OdynsFury:IsReady(unitID) and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 then
+            return A.OdynsFury:Show(icon)
+          end
+
+          -- actions.multi_target+=/bloodbath,if=set_bonus.tier30_4pc&action.bloodthirst.crit_pct_current>=95
+
+          -- actions.multi_target+=/bloodthirst,if=set_bonus.tier30_4pc&action.bloodthirst.crit_pct_current>=95
+
+          -- actions.multi_target+=/crushing_blow,if=talent.wrath_and_fury&buff.enrage.up
+
+          -- actions.multi_target+=/execute,if=buff.enrage.up
+          if A.Execute:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 then
+            return A.Execute:Show(icon)
+          end
+
+          -- actions.multi_target+=/odyns_fury,if=buff.enrage.up&raid_event.adds.in>15
+          if A.OdynsFury:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 then
+            return A.OdynsFury:Show(icon)
+          end
+
+          -- actions.multi_target+=/rampage,if=buff.recklessness.up|buff.enrage.remains<gcd|(rage>110&talent.overwhelming_rage)|(rage>80&!talent.overwhelming_rage)
+          if A.Rampage:IsReady(unitID) and (Unit(player):HasBuffs(A.Recklessness.ID) > 0 or Unit(player):HasBuffs(A.AshenJuggernaut.ID) < A.GetGCD() or (Player:Rage() > 110 and A.OverwhelmingRage:IsTalentLearned()) or (Player:Rage() > 80 and not A.OverWhelmingRage:IsTalentLearned())) then
+            return A.Rampage:Show(icon)
+          end
+
+          -- actions.multi_target+=/execute
+          if A.Execute:IsReady(unitID) then
+            return A.Execute:Show(icon)
+          end
+
+          -- actions.multi_target+=/bloodbath,if=buff.enrage.up&talent.reckless_abandon&!talent.wrath_and_fury
+          if A.Bloodbath:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 and A.RecklessAbandon:IsTalentLearned() and not A.WrathAndFury:IsTalentLearned() then
+            return A.Bloodbath:Show(icon)
+          end
+
+          -- actions.multi_target+=/bloodthirst,if=buff.enrage.down|(talent.annihilator&!buff.recklessness.up)
+          if A.Bloodthirst:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID) == 0 or (A.Annihilator:IsTalentLearned() and Unit(player):HasBuffs(A.Recklessness.ID) == 0) then
+            return A.Bloodthirst:Show(icon)
+          end
+
+          -- actions.multi_target+=/onslaught,if=!talent.annihilator&buff.enrage.up|talent.tenderize
+          if A.Onslaught:IsReady(unitID) and (not A.Annihilator:IsTalentLearned() and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 or A.Tenderize:IsTalentLearned()) then
+            return A.Onslaught:Show(icon)
+          end
+
+          -- actions.multi_target+=/raging_blow,if=charges>1&talent.wrath_and_fury
+          if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellChargesFrac() > 1 and A.WrathAndFury:IsTalentLearned() then
+            return A.RagingBlow:Show(icon)
+          end
+
+          -- actions.multi_target+=/crushing_blow,if=charges>1&talent.wrath_and_fury
+
+          -- actions.multi_target+=/bloodbath,if=buff.enrage.down|!talent.wrath_and_fury
+          if A.Bloodbath:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID) == 0 or not A.WrathAndFury:IsTalentLearned()) then
+            return A.Bloodbath:Show(icon)
+          end
+          -- actions.multi_target+=/crushing_blow,if=buff.enrage.up&talent.reckless_abandon
+
+          -- actions.multi_target+=/bloodthirst,if=!talent.wrath_and_fury
+          if A.Bloodthirst:IsReady(unitID) and not A.WrathAndFury:IsTalentLearned() then
+            return A.Bloodthirst:Show(icon)
+          end
+
+          -- actions.multi_target+=/raging_blow,if=charges>=1
+          if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellChargesFrac() > 1 then
+            return A.RagingBlow:Show(icon)
+          end
+
+          -- actions.multi_target+=/rampage
+          if A.Rampage:IsReady(unitID) then
+            return A.Rampage:Show(icon)
+          end
+
+          -- actions.multi_target+=/slam,if=talent.annihilator
+          if A.Slam:IsReady(unitID) and A.Annihilator:IsTalentLearned() then
+            return A.Slam:Show(icon)
+          end
+
+          -- actions.multi_target+=/bloodbath
+          if A.Bloodbath:IsReady(unitID) then
+            return A.Bloodbath:Show(icon)
+          end
+
+          -- actions.multi_target+=/raging_blow
+          if A.RagingBlow:IsReady(unitID) then
+            return A.RagingBlow:Show(icon)
+          end
+          -- actions.multi_target+=/crushing_blow
+
+          -- actions.multi_target+=/whirlwind
+          if A.Whirlwind:IsReady(unitID) and inAoE and inMelee then
+            return A.Whirlwind:Show(icon)
+          end
+
+        end
+
         -- [[ Single Target ]]
         local function ST()
+
           -- actions.single_target=whirlwind,if=spell_targets.whirlwind>1&talent.improved_whirlwind&!buff.meat_cleaver.up|raid_event.adds.in<2&talent.improved_whirlwind&!buff.meat_cleaver.up
           if A.Whirlwind:IsReady(unitID, true) and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 and Unit(player):HasBuffs(A.MeatCleaverBuff.ID) == 0 and A.ImprovedWhirlwind:IsTalentLearned() then
               return A.Whirlwind:Show(icon)
@@ -755,12 +876,12 @@ A[3] = function(icon)
           end
 
           -- actions.single_target+=/odyns_fury,if=buff.enrage.up&(spell_targets.whirlwind>1|raid_event.adds.in>15)&(talent.dancing_blades&buff.dancing_blades.remains<5|!talent.dancing_blades)
-          if A.OdynsFury:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 and (A.DancingBlades:IsTalentLearned() and Unit(player):HasBuffs(A.DancingBlades.ID) < 5 or not A.DancingBlades:IsTalentLearned()) then
+          if A.OdynsFury:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID) > 0 and inAoE and inMelee and MultiUnits:GetByRange(8, 2) > 1 and (A.DancingBlades:IsTalentLearned() and Unit(player):HasBuffs(A.DancingBlades.ID) < 5 or not A.DancingBlades:IsTalentLearned())) then
             return A.OdynsFury:Show(icon)
           end
 
           -- actions.single_target+=/rampage,if=talent.anger_management&(buff.recklessness.up|buff.enrage.remains<gcd|rage.pct>85)
-          if A.Rampage:IsReady(unitID) and A.AngerManagement:IsTalentLearned() and (Unit(player):HasBuffs(A.Recklessness.ID) > 0 or Unit(player):HasBuffs(A.EnrageBuff.ID) < A.GetGCD() or Player:Rage() > 95) then
+          if A.Rampage:IsReady(unitID) and (A.AngerManagement:IsTalentLearned() and (Unit(player):HasBuffs(A.Recklessness.ID) > 0 or Unit(player):HasBuffs(A.EnrageBuff.ID) < A.GetGCD() or Player:RagePercentage() > 85)) then
             return A.Rampage:Show(icon)
           end
 
@@ -780,7 +901,7 @@ A[3] = function(icon)
           -- actions.single_target+=/crushing_blow,if=talent.wrath_and_fury&buff.enrage.up
 
           -- actions.single_target+=/rampage,if=talent.reckless_abandon&(buff.recklessness.up|buff.enrage.remains<gcd|rage.pct>85)
-          if A.Rampage:IsReady(unitID) and A.RecklessAbandon:IsTalentLearned() and (Unit(player):HasBuffs(A.Recklessness.ID) > 0 or Unit(player):HasBuffs(A.EnrageBuff.ID) < A.GetGCD() or Player:Rage() > 85) then
+          if A.Rampage:IsReady(unitID) and (A.RecklessAbandon:IsTalentLearned() and (Unit(player):HasBuffs(A.Recklessness.ID) > 0 or Unit(player):HasBuffs(A.EnrageBuff.ID) < A.GetGCD() or Player:RagePercentage() > 85)) then
             return A.Rampage:Show(icon)
           end
 
@@ -802,7 +923,7 @@ A[3] = function(icon)
           -- actions.single_target+=/bloodthirst,if=buff.enrage.down|(talent.annihilator&!buff.recklessness.up)
           if A.Bloodthirst:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID) == 0 or (A.Annihilator:IsTalentLearned() or Unit(player):HasBuffs(A.Recklessness.ID) == 0)) then
             return A.Bloodthirst:Show(icon)
-          end 
+          end
 
           -- actions.single_target+=/raging_blow,if=charges>1&talent.wrath_and_fury
           if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellChargesFrac() > 1 and A.WrathAndFury:IsTalentLearned() then
@@ -882,6 +1003,13 @@ A[3] = function(icon)
         -- CDs
         if isBurst and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and CDs() then
             return true
+        end
+
+        -- Multi Target
+        if MultiUnits:GetByRange(8, 3) > 2 then
+          if MT() then
+            return true
+          end
         end
 
         --Single Target
@@ -1058,4 +1186,3 @@ end
 A[8] = function(icon)
     return ArenaRotation(icon, "arena3")
 end
-
