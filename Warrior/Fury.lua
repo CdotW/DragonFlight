@@ -1,3 +1,5 @@
+--  Zakll's Fury Warrior - Updated by TheAllSeeing
+
 local _G, setmetatable, pairs, type, math    = _G, setmetatable, pairs, type, math
 local huge                                     = math.huge
 local math_random                            = math.random
