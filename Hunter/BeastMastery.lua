@@ -131,6 +131,7 @@ Action[ACTION_CONST_HUNTER_BEASTMASTERY] = {
     WailingArrow		    = Action.Create({ Type = "Spell", ID = 392060   }),
     CalloftheWild			= Action.Create({ Type = "Spell", ID = 359844   }),
     CobraShot				= Action.Create({ Type = "Spell", ID = 193455   }),
+    BloodBolt				= Action.Create({ Type = "Spell", ID = 288962   }),
     FortitudeoftheBear		= Action.Create({ Type = "SpellSingleColor", ID = 272679, Color = "PINK"   }),
     Frenzy      			= Action.Create({ Type = "Spell", ID = 272790, Hidden = true   }),
     ScentofBlood     		= Action.Create({ Type = "Spell", ID = 193532, Hidden = true   }),
